@@ -4,7 +4,7 @@ const path = 'http://127.0.0.1:5000';
  Função para obter o orçamento mensal ou anual
 */
 const getOrcamento = (mes, ano) => {
-  let url = path + '/orcamento';
+  let url = path + '/gerar_orcamento';
   if (!!ano) {
     url = url + '?ano=' + ano;
     if (!!mes) {
@@ -13,7 +13,11 @@ const getOrcamento = (mes, ano) => {
   }
   fetch(url, { method: 'GET' })
     .then((response) => response.json())
-    .then((data) => data.orcamento.forEach(lancamento => insertList(lancamento)))
+    .then((data) => {
+      data.orcamento.forEach(lancamento => insertList(lancamento));
+      const rodape = document.getElementById('Total');
+      rodape.textContent = `Quantidade de lançamentos: ${data.quantidade} Saldo: R$ ${data.saldo}`
+    })
     .catch((error) => console.error('Error:', error));
 }
 
@@ -41,7 +45,6 @@ const insertButton = (parent) => {
 */
 const removeElement = () => {
   let close = document.getElementsByClassName("close");
-  // var table = document.getElementById('myTable');
   let i;
   for (i = 0; i < close.length; i++) {
     close[i].onclick = function () {
@@ -81,16 +84,16 @@ const deleteItem = (idLancamento) => {
   --------------------------------------------------------------------------------------
 */
 function insertList(lancamento) {
-  let item = [lancamento.id, lancamento.dataDoFato, lancamento.descricao, lancamento.valor, lancamento.ehReceita, lancamento.subGrupo];
+  let item = [lancamento.id, lancamento.dataDoFato, lancamento.descricao, lancamento.valor, lancamento.ehReceita, lancamento.subGrupo.descricao];
   let tabela = document.getElementById('minhaTabela');
-  var linha = table.insertRow();
+  let linha = tabela.insertRow();
 
   for (let i = 0; i < item.length; i++) {
-    let cel = row.insertCell(i);
+    let cel = linha.insertCell(i);
     cel.textContent = item[i];
   }
-  insertButton(row.insertCell(-1));
+  insertButton(linha.insertCell(-1));
 
-  remove
+  removeElement();
 }
 
