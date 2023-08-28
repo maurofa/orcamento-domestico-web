@@ -5,34 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <title>Orçamento Doméstico</title>
 </head>
 <body>
-  <header>
-    <h2 class="title">Orçamento Doméstico</h2>
+  <header class="jumbotron">
     <div class="banner">
-      <img src="https://i0.hippopx.com/photos/35/159/710/wallet-credit-card-cash-investment-preview.jpg"
-      alt="carteira com moedas">
+      <h2 class="title">Orçamento Doméstico</h2>
     </div>
   </header>
 
-  <section class="lancamentos">
-    <table id="minhaTabela">
-      <tr>
-        <th>ID</th>
-        <th>Data do Fato</th>
-        <th>Descrição</th>
-        <th>Valor</th>
-        <th>É Receita</th>
-        <th>Sub-grupo</th>
-        <th><img src="https://cdn-icons-png.flaticon.com/512/126/126468.png" width="15px" height="15px"></th>
-      </tr>
-    </table>
-  </section>
+  <div class="container-fluid text-center">
+    <section class="lancamentos row">
+      <table id="minhaTabela" class="table">
+        <tr>
+          <th>ID</th>
+          <th>Data do Fato</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>É Receita</th>
+          <th>Sub-grupo</th>
+          <th><img src="https://cdn-icons-png.flaticon.com/512/126/126468.png" width="15px" height="15px"></th>
+        </tr>
+      </table>
+    </section>
 
-  <h3 id="Total" class="rodapé">Total</h3>
+    <h3 id="Total" class="rodapé row">Total</h3>
+
+    <div class="row">
+      <button class="plus-button plus-button--large"></button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

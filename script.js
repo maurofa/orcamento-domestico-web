@@ -16,7 +16,8 @@ const getOrcamento = (mes, ano) => {
     .then((data) => {
       data.orcamento.forEach(lancamento => insertList(lancamento));
       const rodape = document.getElementById('Total');
-      rodape.textContent = `Quantidade de lançamentos: ${data.quantidade} Saldo: R$ ${data.saldo}`
+      rodape.textContent = `Quantidade de lançamentos: ${data.quantidade} Saldo: R$ ${data.saldo}`;
+      removeElement();
     })
     .catch((error) => console.error('Error:', error));
 }
@@ -30,11 +31,10 @@ getOrcamento();
   --------------------------------------------------------------------------------------
 */
 const insertButton = (parent) => {
-  const span = document.createElement("span");
-  const txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  parent.appendChild(span);
+  const button = document.createElement("button");
+  button.className = "btn-close";
+  button.ariaLabel = "Close";
+  parent.appendChild(button);
 }
 
 
@@ -44,16 +44,17 @@ const insertButton = (parent) => {
   --------------------------------------------------------------------------------------
 */
 const removeElement = () => {
-  let close = document.getElementsByClassName("close");
+  let close = document.getElementsByClassName("btn-close");
   let i;
   for (i = 0; i < close.length; i++) {
     close[i].onclick = function () {
       let div = this.parentElement.parentElement;
       const idLancamento = div.getElementsByTagName('td')[0].innerHTML
-      if (confirm("Você tem certeza?")) {
-        div.remove()
-        deleteItem(idLancamento)
-        alert("Removido!")
+      if (confirm("Você tem certeza que deseja excluir este lançamento?")) {
+        if (deleteItem(idLancamento)) {
+          div.remove();
+          alert("Removido!");
+        }
       }
     }
   }
@@ -67,13 +68,18 @@ const removeElement = () => {
 const deleteItem = (idLancamento) => {
   console.log(idLancamento)
   let url = `${path}/${idLancamento}/excluir`;
+  let excluiu = false;
   fetch(url, {
     method: 'delete'
   })
-    .then((response) => response.json())
+    .then((response) => {
+      excluiu = true;
+      return response.json();
+    })
     .catch((error) => {
       console.error('Error:', error);
     });
+  return excluiu;
 }
 
 
@@ -87,13 +93,12 @@ function insertList(lancamento) {
   let item = [lancamento.id, lancamento.dataDoFato, lancamento.descricao, lancamento.valor, lancamento.ehReceita, lancamento.subGrupo.descricao];
   let tabela = document.getElementById('minhaTabela');
   let linha = tabela.insertRow();
+  linha.className = lancamento.ehReceita ? 'table-success' : 'table-danger';
 
   for (let i = 0; i < item.length; i++) {
     let cel = linha.insertCell(i);
     cel.textContent = item[i];
   }
   insertButton(linha.insertCell(-1));
-
-  removeElement();
 }
 
