@@ -1,4 +1,4 @@
-const path = 'http://127.0.0.1:5000';
+const path = 'https://orcamentodomesticoapi-maurofabri.b4a.run';
 
 /*
  Função para obter o orçamento mensal ou anual
