@@ -198,15 +198,16 @@ const populaSubGrupos = ()  => {
 
 /**
  * Cria um evento para o formulário de cadastro de Lançamento
- * @param {*} event
+ * @param {SubmitEvent} event
  */
 form.onsubmit = (event) => {
+  event.preventDefault();
   if (!form.checkValidity()) {
-    event.preventDefault();
     event.stopPropagation();
   } else {
     postLancamento(form['select-subgrupo'].value, form['dataDoFato'].value, form['descricao'].value, form['valorLancamento'].value, form['ehReceita'].checked);
   }
+
   form.classList.add('was-validated');
 }
 
@@ -233,7 +234,7 @@ const postLancamento = (idSubGrupo, dataDoFato, descricao, valor, ehReceita) => 
   })
     .then(response => response.json())
     .then(data => {
-      orcamento = orcamento.push(data.lancamento);
+      orcamento.push(data);
       const tbody = document.createElement('tbody');
       carregaTabelaOrcamento(tbody);
       const oldTbody = tabelaOrcamento.lastChild;
