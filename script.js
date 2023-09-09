@@ -112,6 +112,7 @@ const deleteItem = (idLancamento) => {
         carregaTabelaOrcamento(tbody);
         const oldTbody = tabelaOrcamento.lastChild;
         tabelaOrcamento.replaceChild(tbody, oldTbody);
+        addEventoBotaoFechar();
         alert(`Lançamento de id ${idLancamento} removido!`);
       }
     })
@@ -133,10 +134,14 @@ function insertList(lancamento, tbody) {
   let linha = tbody.insertRow();
   linha.className = lancamento.ehReceita ? 'table-success' : 'table-danger';
 
-  for (let i = 0; i < item.length; i++) {
-    let cel = linha.insertCell(i);
-    cel.textContent = item[i];
-  }
+  let ultimaCel;
+  item.forEach((item, index) => {
+    const cel = linha.insertCell(index);
+    cel.textContent = item;
+    ultimaCel = cel;
+  });
+  ultimaCel.className = lancamento.saldo < 0 ? "text-danger" : "text-primary";
+
   insertButton(linha.insertCell(-1));
 }
 
@@ -233,6 +238,7 @@ const postLancamento = (idSubGrupo, dataDoFato, descricao, valor, ehReceita) => 
       carregaTabelaOrcamento(tbody);
       const oldTbody = tabelaOrcamento.lastChild;
       tabelaOrcamento.replaceChild(tbody, oldTbody);
+      addEventoBotaoFechar();
     })
     .catch(error => console.error('Error: ', error));
 }
