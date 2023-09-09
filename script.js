@@ -105,13 +105,15 @@ const deleteItem = (idLancamento) => {
   fetch(url, {
     method: 'delete'
   })
-    .then(() => {
-      orcamento = orcamento.filter(lancamento => lancamento.id != idLancamento);
-      const tbody = document.createElement('tbody');
-      carregaTabelaOrcamento(tbody);
-      const oldTbody = tabelaOrcamento.lastChild;
-      tabelaOrcamento.replaceChild(tbody, oldTbody);
-      alert(`Lançamento de id ${idLancamento} removido!`);
+    .then((response) => {
+      if (response.status == '200') {
+        orcamento = orcamento.filter(lancamento => lancamento.id != idLancamento);
+        const tbody = document.createElement('tbody');
+        carregaTabelaOrcamento(tbody);
+        const oldTbody = tabelaOrcamento.lastChild;
+        tabelaOrcamento.replaceChild(tbody, oldTbody);
+        alert(`Lançamento de id ${idLancamento} removido!`);
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -143,25 +145,31 @@ function insertList(lancamento, tbody) {
 */
 document.getElementById('maisUm').onclick = () => {
   let url = path + '/grupos';
-  fetch(url, { method: 'GET' })
-    .then((response) => response.json())
-    .then((data) => {
-      const selectGrupo = document.getElementById('select-grupo');
-      data.grupos.forEach(grupo => insertOption(grupo, selectGrupo));
-      selectGrupo.onchange = () => populaSubGrupos();
-    });
+  const selectGrupo = document.getElementById('select-grupo');
+  if (selectGrupo.children.length == 1) {
+    fetch(url, { method: 'GET' })
+      .then((response) => response.json())
+      .then((data) => {
+        data.grupos.forEach(grupo => selectGrupo.appendChild(createOption(grupo, selectGrupo)));
+        selectGrupo.onchange = () => populaSubGrupos();
+      });
+  }
 }
 
 /**
- * Insere uma opção em um select.
+ *
  * @param {{id: number, descricao: string}} entidade tem que ter um id e uma descrição
- * @param {HTMLElement} select referência para o select do DOM
  */
-const insertOption = (entidade, select) => {
+/**
+ * Cria uma opção para um select.
+ * @param {{id: number, descricao: string}} entidade tem que ter um id e uma descrição
+ * @returns Opção criada no document
+ */
+const createOption = (entidade) => {
   const option = document.createElement('option');
   option.textContent = entidade.descricao;
   option.value = entidade.id;
-  select.appendChild(option);
+  return option;
 }
 
 /**
@@ -175,7 +183,9 @@ const populaSubGrupos = ()  => {
     .then(data => {
       const selectSubGrupo = document.getElementById('select-subgrupo');
       selectSubGrupo.disabled = false;
-      data.subGrupos.forEach(subgrupo => insertOption(subgrupo, selectSubGrupo));
+      selectSubGrupo.replaceChildren([]);
+      selectSubGrupo.appendChild(createOption({ descricao: 'Selecione um SubGrupo' }));
+      data.subGrupos.map(subgrupo => selectSubGrupo.appendChild(createOption(subgrupo, selectSubGrupo)));
     });
 }
 
