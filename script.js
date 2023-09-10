@@ -189,7 +189,7 @@ const populaSubGrupos = ()  => {
       const selectSubGrupo = document.getElementById('select-subgrupo');
       selectSubGrupo.disabled = false;
       selectSubGrupo.replaceChildren([]);
-      selectSubGrupo.appendChild(createOption({ descricao: 'Selecione um SubGrupo' }));
+      selectSubGrupo.appendChild(createOption({ id:'', descricao: 'Selecione um SubGrupo' }));
       data.subGrupos.map(subgrupo => selectSubGrupo.appendChild(createOption(subgrupo, selectSubGrupo)));
     });
 }
@@ -204,11 +204,13 @@ form.onsubmit = (event) => {
   event.preventDefault();
   if (!form.checkValidity()) {
     event.stopPropagation();
+    form.classList.add('was-validated');
   } else {
     postLancamento(form['select-subgrupo'].value, form['dataDoFato'].value, form['descricao'].value, form['valorLancamento'].value, form['ehReceita'].checked);
+    form.reset();
+    form.classList.remove('was-validated');
+    document.getElementById("botalModalClose").click();
   }
-
-  form.classList.add('was-validated');
 }
 
 /**
