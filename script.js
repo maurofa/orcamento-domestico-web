@@ -162,10 +162,6 @@ document.getElementById('maisUm').onclick = () => {
 }
 
 /**
- *
- * @param {{id: number, descricao: string}} entidade tem que ter um id e uma descrição
- */
-/**
  * Cria uma opção para um select.
  * @param {{id: number, descricao: string}} entidade tem que ter um id e uma descrição
  * @returns Opção criada no document
