@@ -240,8 +240,8 @@ const Atual = () => {
     <>
       <CssBaseline />
       <Grid container direction="column" justifyContent="center" alignItems="stretch">
-        <Paper xl>
-          <TableContainer sx={{ height: "600px" }}>
+        <Paper>
+          <TableContainer sx={{ height: "550px" }}>
             <Table stickyHeader aria-label="tabela com os lançamentos do mês" sx={{height: "max-content"}}>
               <TableHead>
                 <TableRow>
@@ -273,7 +273,7 @@ const Atual = () => {
             </Table>
           </TableContainer>
         </Paper>
-        <Stack xl={2} direction="column" alignItems="center" >
+        <Stack direction="column" alignItems="center" >
           <Tooltip title="faz lançamento">
             <IconButton onClick={(event) => cadastraLancamento(event)} aria-label='faz lançamento' size='large'>
               <AddCircleIcon fontSize='large' />
