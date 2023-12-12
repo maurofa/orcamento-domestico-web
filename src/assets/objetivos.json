@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "descricao": "Comprar um carro",
+    "valor": 100000.0,
+    "dataAlvo": 1765324800000,
+    "valorAlocado": 10000.0
+  },
+  {
+    "id": 2,
+    "descricao": "Quitar o apartamento",
+    "valor": 150000.0,
+    "dataAlvo": 1923091200000,
+    "valorAlocado": 10000.0
+  }
+]

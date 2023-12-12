@@ -1,0 +1,217 @@
+{
+  "dados": [
+    {
+      "id": 1,
+      "idSubgrupo": 1,
+      "descricao": "Salário do mês",
+      "valor": 10000.0,
+      "dataDaCompra": 1702216703000,
+      "ehCredito": true
+    },
+    {
+      "id": 2,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 1000.0,
+      "dataDaCompra": 1702216703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1704895103000
+    },
+    {
+      "id": 3,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 1000.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 4,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 100.0,
+      "dataDaCompra": 1699634703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 5,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 50.0,
+      "dataDaCompra": 1699724703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 6,
+      "idSubgrupo": 49,
+      "descricao": "Presente da Loren Ipsum",
+      "valor": 100.0,
+      "dataDaCompra": 1699724603000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 7,
+      "idSubgrupo": 52,
+      "descricao": "Cinema",
+      "valor": 80.0,
+      "dataDaCompra": 1699744703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 8,
+      "idSubgrupo": 47,
+      "descricao": "Roupas",
+      "valor": 600.0,
+      "dataDaCompra": 1699524703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 9,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699824703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 10,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 70.0,
+      "dataDaCompra": 1699924703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 11,
+      "idSubgrupo": 32,
+      "descricao": "Plano de Saúde",
+      "valor": 1000.0,
+      "dataDaCompra": 1702216703000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 12,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699904703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 13,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699524703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 14,
+      "idSubgrupo": 38,
+      "descricao": "Passagens de ônibus",
+      "valor": 200.0,
+      "dataDaCompra": 1702216703000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 15,
+      "idSubgrupo": 37,
+      "descricao": "Academia",
+      "valor": 100.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 16,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 1000.0,
+      "dataDaCompra": 1702216703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1704895103000
+    },
+    {
+      "id": 17,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 18,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 19,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 20,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1699624703000,
+      "ehCredito": false,
+      "compraNoDebito": false,
+      "quantidadeDeParcelas": 1,
+      "dataDePagamento": 1702106703000
+    }
+  ]
+}
