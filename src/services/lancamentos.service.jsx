@@ -57,14 +57,12 @@ export const atualizaTabelaComLancamento = ({ lancamento }) => {
     lancamentoAnterior.idSubgrupo = lancamento.subgrupo.id;
     lancamentoAnterior.descricao = lancamento.descricao;
     lancamentoAnterior.dataDaCompra = lancamento.dataDaCompra;
-    lancamentoAnterior.valor = lancamento.valor;
+    lancamentoAnterior.valor = lancamento.ehCredito ? lancamento.valor : -lancamento.valor;
     lancamentoAnterior.ehCredito = lancamento.ehCredito;
     lancamentoAnterior.compraNoDebito = lancamento.compraNoDebito;
     lancamentoAnterior.quantidadeDeParcelas = lancamento.quantidadeDeParcelas;
     lancamentoAnterior.dataDePagamento = lancamento.dataDePagamento;
-    return lancamentos;
-  }
-  if (lancamento.ehCredito || lancamento.compraNoDebito ? dataDentroDoMes(lancamento.dataDaCompra) : dataDentroDoMes(lancamento.dataDePagamento)) {
+  } else if (lancamento.ehCredito || lancamento.compraNoDebito ? dataDentroDoMes(lancamento.dataDaCompra) : dataDentroDoMes(lancamento.dataDePagamento)) {
     const lancamentoTratado = {
       id: lancamento.id,
       descricao: lancamento.descricao,
@@ -76,25 +74,24 @@ export const atualizaTabelaComLancamento = ({ lancamento }) => {
       quantidadeDeParcelas: lancamento.quantidadeDeParcelas,
     }
     lancamentos.push(lancamentoTratado);
-    ordenaListaLancamento(lancamentos);
-    let saldoAtual = 0;
-    return lancamentos.map(lancamento => {
-      saldoAtual += lancamento.valor;
-      lancamento.saldo = saldoAtual;
-      return lancamento;
-    });
   }
+  ordenaListaLancamento(lancamentos);
+  return calculaSaldo(lancamentos);
+}
+
+function calculaSaldo(lancamentos) {
+  let saldoAtual = 0;
+  return lancamentos.map(lancamento => {
+    saldoAtual += lancamento.valor;
+    lancamento.saldo = saldoAtual;
+    return lancamento;
+  });
 }
 
 export const atualizaTabelaComExclusao = ({ lancamento }) => {
   let continuam = Lancamentos().filter(lance => lance.id !== lancamento.id);
 
-  let saldoAtual = 0;
-  return continuam.map(lance => {
-    saldoAtual += lance.valor;
-    lance.saldo = saldoAtual;
-    return lance;
-  });
+  return calculaSaldo(continuam);
 }
 
 export const incluiLancamentoNaBase = (lancamento) => {

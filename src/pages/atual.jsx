@@ -32,7 +32,7 @@ import Grupos from '../services/grupo.service';
 import Lancamentos, { atualizaTabelaComExclusao, atualizaTabelaComLancamento } from '../services/lancamentos.service';
 
 const newLancamento = () => ({
-  subgrupo: {},
+  idSubgrupo: '',
   descricao: '',
   dataDaCompra: '',
   valor: '',
@@ -59,14 +59,11 @@ const Atual = () => {
   }
 
   const adicionaNovoLancamento = (lancamento) => {
+    lancamento.subgrupo = grupos.flatMap(grupo => grupo.subgrupos).find(sub => sub.id === lancamento.idSubgrupo);
     setRows(atualizaTabelaComLancamento({lancamento}));
     setLancamento(newLancamento());
     setOpenCadastro(false);
     setOpenConfirmacaoLancamento(true);
-  }
-
-  const handleChange = (lancamento) => {
-    setLancamento(lancamento);
   }
 
   const handleCloseCadastroLancamento = () => {
@@ -117,17 +114,17 @@ const Atual = () => {
               <Select
                 required
                 native
-                defaultValue={lancamento.subgrupo}
+                defaultValue={lancamento.idSubgrupo}
                 id="subgrupoSelect"
                 name='subgrupoSelect'
                 label="Grouping"
-                onSelect={(subgrupo) => handleChange({...lancamento, subgrupo: subgrupo})}
+                onChange={(event) => setLancamento({ ...lancamento, idSubgrupo: +event.target.value })}
               >
                 <option aria-label="None" value="" />
                 {grupos.map(grupo => (
                   <optgroup label={grupo.descricao}>
                     {grupo.subgrupos.map(subgrupo => (
-                      <option value={subgrupo}>{subgrupo.descricao}</option>
+                      <option value={subgrupo.id}>{subgrupo.descricao}</option>
                     ))}
                   </optgroup>
                 ))}
@@ -140,7 +137,7 @@ const Atual = () => {
               label="Descrição"
               required
               defaultValue={lancamento.descricao}
-              onChange={(event) => handleChange({ ...lancamento, descricao: event.target.value })}
+              onChange={(event) => setLancamento({ ...lancamento, descricao: event.target.value })}
             />
           </Stack>
           <Stack direction="row" spacing={1} justifyContent="center" alignItems="stretch" >
@@ -148,7 +145,7 @@ const Atual = () => {
               <DemoItem label="Data da compra">
                 <DatePicker
                   format='DD/MM/YYYY'
-                  onChange={(newValue) => handleChange({ ...lancamento, dataDaCompra: newValue })}
+                  onChange={(newValue) => setLancamento({ ...lancamento, dataDaCompra: newValue })}
                   defaultValue={dayjs(lancamento.dataDaCompra)}
                   name="dataDaCompra"
                 />
@@ -164,8 +161,8 @@ const Atual = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                defaultValue={lancamento.valor}
-                onChange={(event) => handleChange({ ...lancamento, descricao: event.target.value })}
+                defaultValue={lancamento.valor * (lancamento.valor < 0 ?  -1 : 1)}
+                onChange={(event) => setLancamento({ ...lancamento, valor: +event.target.value })}
               />
             </FormControl>
             <FormControl xl='3'>
@@ -176,7 +173,7 @@ const Atual = () => {
                     defaultChecked
                     checked={lancamento.ehCredito}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    onChange={(event) => handleChange({ ...lancamento, ehCredito: event.target.checked })}
+                    onChange={(event) => setLancamento({ ...lancamento, ehCredito: event.target.checked })}
                   />
                 }
                 label={lancamento.ehCredito ? 'É Crédito' : 'É Débito'}
@@ -192,7 +189,7 @@ const Atual = () => {
                     name='compraNoDebito'
                     checked={lancamento.compraNoDebito}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    onChange={(event) => handleChange({ ...lancamento, compraNoDebito: event.target.checked })}
+                    onChange={(event) => setLancamento({ ...lancamento, compraNoDebito: event.target.checked })}
                   />
                 }
                 label={lancamento.compraNoDebito ? 'Compra no débito' : 'Compra parcelada'}
@@ -210,7 +207,7 @@ const Atual = () => {
                   shrink: true,
                 }}
                 defaultValue={lancamento.quantidadeDeParcelas}
-                onChange={(event) => handleChange({ ...lancamento, quantidadeDeParcelas: event.target.value })}
+                onChange={(event) => setLancamento({ ...lancamento, quantidadeDeParcelas: event.target.value })}
               />
             </FormControl>
             <FormControl xl='5'>
@@ -218,7 +215,7 @@ const Atual = () => {
                 <DatePicker
                   disabled={lancamento.compraNoDebito}
                   format='DD/MM/YYYY'
-                  onChange={(newValue) => handleChange({ ...lancamento, dataDePagamento: newValue })}
+                  onChange={(newValue) => setLancamento({ ...lancamento, dataDePagamento: newValue })}
                   defaultValue={dayjs(lancamento.dataDePagamento)}
                   name="dataDePagamento"
                 />
