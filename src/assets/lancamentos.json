@@ -212,6 +212,60 @@
       "compraNoDebito": false,
       "quantidadeDeParcelas": 1,
       "dataDePagamento": 1702106703000
+    },
+    {
+      "id": 21,
+      "idSubgrupo": 13,
+      "descricao": "Condomínio",
+      "valor": 100.0,
+      "dataDaCompra": 1670893281000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 22,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 1000.0,
+      "dataDaCompra": 1673571681000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 23,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1676250081000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 24,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1678669281000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 25,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1678669281000,
+      "ehCredito": false,
+      "compraNoDebito": true
+    },
+    {
+      "id": 26,
+      "idSubgrupo": 7,
+      "descricao": "Compras do mês",
+      "valor": 10.0,
+      "dataDaCompra": 1678669281000,
+      "ehCredito": false,
+      "compraNoDebito": true
     }
   ]
 }

@@ -97,3 +97,13 @@ export const atualizaTabelaComExclusao = ({ lancamento }) => {
 export const incluiLancamentoNaBase = (lancamento) => {
   Lancamentos().push(lancamento);
 }
+
+export const getHistoricoPorGrupo = () => {
+  return [
+    { value: 40, label: 'Pessoal' },
+    { value: 20, label: 'Moradia' },
+    { value: 10, label: 'Alimentação' },
+    { value: 20, label: 'Moradia' },
+    { value: 10, label: 'Outros'}
+  ];
+}

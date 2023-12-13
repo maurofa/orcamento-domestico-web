@@ -4,6 +4,7 @@ import { Box, FormControl, Grid, IconButton, LinearProgress, MenuItem, Paper, Te
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,6 +13,7 @@ import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React from "react";
 import PopupCadastro from "../components/popup-cadastro";
+import PopupConfirmacao from '../components/popup-confirmacao';
 import Objetivos, { adicionaObjetivoNaBase, alteraObjetivoNaBase, concluiObjetivoNaBase } from "../services/objetivos.service";
 
 function LinearProgressWithLabel(props) {
@@ -54,12 +56,14 @@ const Futuro = () => {
   const [openCadastroObjetivo, setOpenCadastroObjetivo] = React.useState(false);
   const [openAlteracaoObjetivo, setOpenAlteracaoObjetivo] = React.useState(false);
   const [openConclusaoObjetivo, setOpenConclusaoObjetivo] = React.useState(false);
+  const [openNotificacao, setOpenNotificacao] = React.useState(false);
   const [openAlocaReserva, setOpenAlocaReserva] = React.useState(false);
   const [openFazRetirada, setOpenFazRetirada] = React.useState(false);
   const [objetivo, setObjetivo] = React.useState(newObjetivo());
   const [reserva, setReserva] = React.useState(newReserva());
   const [titulo, setTitulo] = React.useState("");
   const [objetivos, setObjetivos] = React.useState(Objetivos());
+  const [mensagemNotificacao, setMensagemNotificacao] = React.useState("");
 
   const adicionaObjetivo = (event) => {
     setTitulo("Adicione um Objetivo");
@@ -114,14 +118,18 @@ const Futuro = () => {
     switch (objetivo.tipoOperacao) {
       case 'I':
         adicionaObjetivoNaBase(objetivo);
+        setMensagemNotificacao("Objetivo adicionado na base de dados!");
         break;
       case 'A':
         alteraObjetivoNaBase(objetivo);
+        setMensagemNotificacao("Objetivo alterado na base de dados!");
         break;
       case 'C':
         setObjetivos(concluiObjetivoNaBase(objetivo));
+        setMensagemNotificacao("Objetivo concluído na base de dados!");
         break;
     }
+    setOpenNotificacao(true);
     handleClose();
   }
 
@@ -129,11 +137,19 @@ const Futuro = () => {
     const objetivo =reserva.objetivo;
     if (reserva.valor < 0) {
       objetivo.valorAlocado -= reserva.valor;
+      setMensagemNotificacao("Retirada realizada com sucesso!");
     } else if (reserva.valor > 0) {
       objetivo.valorAlocado += reserva.valor;
+      setMensagemNotificacao("Alocação de reservas realizada com sucesso!");
     }
     alteraObjetivoNaBase(objetivo);
+    setOpenNotificacao(true);
     handleCloseReserva();
+  }
+
+  const handleCloseNotificacao = () => {
+    setOpenNotificacao(false);
+    setMensagemNotificacao("");
   }
 
   const getConteudoAdicionaObjetivo = () => (
@@ -277,10 +293,6 @@ const Futuro = () => {
     </Grid>
   );
 
-  const getConteudoConcluiObjetivo = () => (
-    <Grid></Grid>
-  );
-
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
@@ -323,12 +335,12 @@ const Futuro = () => {
           onClose={handleClose}
           onSubmit={handleSubmit}
         />
-        <PopupCadastro
+        <PopupConfirmacao
           open={openConclusaoObjetivo}
-          conteudo={getConteudoConcluiObjetivo()}
+          onClose={() => handleClose()}
+          onConfirma={handleSubmit}
           titulo={titulo}
-          onClose={handleClose}
-          onSubmit={handleSubmit}
+          subTitulo="Esta operação não pode ser desfeita."
         />
         <PopupCadastro
           open={openAlocaReserva}
@@ -343,6 +355,12 @@ const Futuro = () => {
           titulo={titulo}
           onClose={handleCloseReserva}
           onSubmit={handleSubmitReserva}
+        />
+        <Snackbar
+          open={openNotificacao}
+          autoHideDuration={5000}
+          onClose={handleCloseNotificacao}
+          message={mensagemNotificacao}
         />
       </LocalizationProvider>
     </>
