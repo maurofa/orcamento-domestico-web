@@ -28,16 +28,16 @@ import dayjs from 'dayjs';
 import * as React from 'react';
 import PopupCadastro from '../components/popup-cadastro';
 import PopupConfirmacao from '../components/popup-confirmacao';
-import Grupos from '../services/grupo.service';
-import Lancamentos, { atualizaTabelaComExclusao, atualizaTabelaComLancamento } from '../services/lancamentos.service';
+import getGrupos from '../services/grupo.service';
+import getLancamentos, { atualizaTabelaComExclusao, atualizaTabelaComLancamento } from '../services/lancamentos.service';
 
 const newLancamento = () => ({
-  idSubgrupo: '',
+  subGrupoId: '',
   descricao: '',
   dataDaCompra: '',
   valor: '',
   ehCredito: true,
-  compraNoDebito: true,
+  compraNoDebito: false,
   quantidadeDeParcelas: '',
   dataDePagamento: ''
 });
@@ -48,9 +48,13 @@ const Atual = () => {
   const [openNotificacaoLancamento, setOpenConfirmacaoLancamento] = React.useState(false);
   const [openConfirmacaoExclusao, setOpenConfirmacaoExclusao] = React.useState(false);
   const [titulo, setTitulo] = React.useState("");
-  const [rows, setRows] = React.useState(Lancamentos());
+  const [rows, setRows] = React.useState([]);
+  const [grupos, setGrupos] = React.useState([]);
 
-  const grupos = Grupos();
+  React.useEffect(() => {
+    getLancamentos().then(lancamentos => setRows(lancamentos));
+    getGrupos().then(grupos => setGrupos(grupos));
+  }, []);
 
   const cadastraLancamento = (event) => {
     event.preventDefault();
@@ -59,11 +63,12 @@ const Atual = () => {
   }
 
   const adicionaNovoLancamento = (lancamento) => {
-    lancamento.subgrupo = grupos.flatMap(grupo => grupo.subgrupos).find(sub => sub.id === lancamento.idSubgrupo);
-    setRows(atualizaTabelaComLancamento({lancamento}));
-    setLancamento(newLancamento());
-    setOpenCadastro(false);
-    setOpenConfirmacaoLancamento(true);
+    atualizaTabelaComLancamento(lancamento, rows).then(lancamentos => {
+      setRows(lancamentos);
+      setLancamento(newLancamento());
+      setOpenCadastro(false);
+      setOpenConfirmacaoLancamento(true);
+    });
   }
 
   const handleCloseCadastroLancamento = () => {
@@ -93,9 +98,12 @@ const Atual = () => {
   }
 
   const excluirLancamento = (lancamento) => {
-    setRows(atualizaTabelaComExclusao({ lancamento }));
-    setOpenConfirmacaoExclusao(false);
-    setLancamento(newLancamento());
+    atualizaTabelaComExclusao(lancamento, rows)
+      .then(lancamentos => {
+        setRows(lancamentos);
+        setOpenConfirmacaoExclusao(false);
+        setLancamento(newLancamento());
+      });
   }
 
   const getConteudo = () => {
@@ -114,17 +122,17 @@ const Atual = () => {
               <Select
                 required
                 native
-                defaultValue={lancamento.idSubgrupo}
+                defaultValue={lancamento.subGrupoId}
                 id="subgrupoSelect"
                 name='subgrupoSelect'
                 label="Grouping"
-                onChange={(event) => setLancamento({ ...lancamento, idSubgrupo: +event.target.value })}
+                onChange={(event) => setLancamento({ ...lancamento, subGrupoId: +event.target.value })}
               >
                 <option aria-label="None" value="" />
                 {grupos.map(grupo => (
                   <optgroup label={grupo.descricao}>
-                    {grupo.subgrupos.map(subgrupo => (
-                      <option value={subgrupo.id}>{subgrupo.descricao}</option>
+                    {grupo.subGrupos.map(subGrupo => (
+                      <option value={subGrupo.id}>{subGrupo.descricao}</option>
                     ))}
                   </optgroup>
                 ))}
@@ -254,9 +262,9 @@ const Atual = () => {
               <TableBody>
                 {rows.map(row => (
                   <TableRow sx={{backgroundColor: row.valor < 0 ? 'pink' : 'lightblue'}}>
-                    <TableCell>{row.subgrupo.descricao}</TableCell>
+                    <TableCell>{row.subGrupo.descricao}</TableCell>
                     <TableCell>{row.dataDaCompra.toLocaleDateString()}</TableCell>
-                    <TableCell>{row.dataDePagamento.toLocaleDateString()}</TableCell>
+                    <TableCell>{row.dataDePagamento?.toLocaleDateString()}</TableCell>
                     <TableCell>{row.descricao}</TableCell>
                     <TableCell>{row.valor}</TableCell>
                     <TableCell>{row.saldo}</TableCell>

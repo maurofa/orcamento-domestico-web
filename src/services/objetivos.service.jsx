@@ -1,5 +1,4 @@
 import objetivos from "../assets/objetivos.json";
-import { incluiLancamentoNaBase } from "./lancamentos.service";
 
 export default function Objetivos() {
   return objetivos;
@@ -24,6 +23,6 @@ export const concluiObjetivoNaBase = (objetivo) => {
     dataDaCompra: new Date(),
     ehCredito: true,
   }
-  incluiLancamentoNaBase(lancamento);
+  //incluiLancamentoNaBase(lancamento);
   return Objetivos().filter(obj => obj.id !== objetivo.id);
 }

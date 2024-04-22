@@ -1,13 +1,8 @@
-import grupos from '../assets/grupos.json';
+import axios from 'axios';
 
-export default function Grupos() {
-  return grupos;
-}
+const client = axios.create({ baseURL: "http://localhost:5000/grupos" });
 
-export function subgrupos() {
-  return Grupos().flatMap(grupo => grupo.subgrupos);
-}
-
-export function getSubgrupo(idSubgrupo) {
-  return subgrupos().find(sub => sub.id === idSubgrupo);
+export default function getGrupos() {
+  return client.get('')
+      .then(response => response.data.grupos);
 }

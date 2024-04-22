@@ -1,13 +1,6 @@
-import lancametosList from '../assets/lancamentos.json';
-import { getSubgrupo } from "./grupo.service";
+import axios from "axios";
 
-const dataDentroDoMes = (data) => {
-  const dataInput = new Date(data);
-  const agora = new Date();
-  const primeiroDia = new Date(agora.getFullYear(), agora.getMonth(), 1);
-  const ultimoDia = new Date(agora.getFullYear(), agora.getMonth() + 1, 0);
-  return dataInput >= primeiroDia && dataInput <= ultimoDia;
-}
+const client = axios.create({baseURL: 'http://localhost:5000/lancamentos'});
 
 const ordenaListaLancamento = (lancamentos) => {
   lancamentos.sort((a, b) => {
@@ -21,62 +14,79 @@ const ordenaListaLancamento = (lancamentos) => {
   });
 }
 
-const Lancamentos = () => {
-
-  let copia = lancametosList.dados
-    .filter(lancamento => lancamento.ehCredito || lancamento.compraNoDebito ? dataDentroDoMes(lancamento.dataDaCompra)
-      : dataDentroDoMes(lancamento.dataDePagamento));
+const preencheLancamentos = (lancamentosList) => {
+  let copia = lancamentosList
+    .map(lancamento => preencheUmLancamentoSemSaldo(lancamento));
 
   ordenaListaLancamento(copia);
 
   let saldoAtual = 0;
   return copia.map(lancamento => {
-    const retorno = {
-      id: lancamento.id,
-      descricao: lancamento.descricao,
-      idSubgrupo: lancamento.idSubgrupo,
-      subgrupo: getSubgrupo(lancamento.idSubgrupo),
-      valor: lancamento.ehCredito ? lancamento.valor : -lancamento.valor,
-      dataDaCompra: new Date(lancamento.dataDaCompra),
-      dataDePagamento: lancamento.ehCredito || lancamento.compraNoDebito ? new Date(lancamento.dataDaCompra) : new Date(lancamento.dataDePagamento),
-      quantidadeDeParcelas: lancamento.quantidadeDeParcelas,
-    };
-    saldoAtual += retorno.valor;
-    retorno.saldo = saldoAtual;
-    return retorno;
+    saldoAtual += lancamento.valor;
+    lancamento.saldo = saldoAtual;
+    return lancamento;
   });
 }
 
-export default Lancamentos;
+const preencheUmLancamentoSemSaldo = (lancamento) => {
+  const retorno = { ...lancamento };
+  retorno.subGrupoId = lancamento.subGrupo.id;
+  const valor = Math.abs(lancamento.valor);
+  retorno.valor = lancamento.ehCredito ? valor : -valor;
+  retorno.dataDaCompra = new Date(lancamento.dataDaCompra);
+  retorno.dataDePagamento = lancamento.ehCredito || lancamento.compraNoDebito ? new Date(lancamento.dataDaCompra) : new Date(lancamento.dataDePagamento);
+  return retorno;
+}
 
-export const atualizaTabelaComLancamento = ({ lancamento }) => {
-  const lancamentos = Lancamentos();
+const getLancamentos = () => {
+
+  return client.get('')
+    .then(response => preencheLancamentos(response.data.lancamentos));
+
+}
+
+export default getLancamentos;
+
+const dataDentroDoMes = (data) => {
+  const dataInput = new Date(data);
+  const agora = new Date();
+  const primeiroDia = new Date(agora.getFullYear(), agora.getMonth(), 1);
+  const ultimoDia = new Date(agora.getFullYear(), agora.getMonth() + 1, 0);
+  return dataInput >= primeiroDia && dataInput <= ultimoDia;
+}
+
+export const atualizaTabelaComLancamento = (lancamento, lancamentosList) => {
+  const formData = new FormData();
   if (lancamento.id) {
-    const lancamentoAnterior = lancamentos.find(lance => lance.id === lancamento.id);
-    lancamentoAnterior.subgrupo = lancamento.subgrupo;
-    lancamentoAnterior.idSubgrupo = lancamento.subgrupo.id;
-    lancamentoAnterior.descricao = lancamento.descricao;
-    lancamentoAnterior.dataDaCompra = lancamento.dataDaCompra;
-    lancamentoAnterior.valor = lancamento.ehCredito ? lancamento.valor : -lancamento.valor;
-    lancamentoAnterior.ehCredito = lancamento.ehCredito;
-    lancamentoAnterior.compraNoDebito = lancamento.compraNoDebito;
-    lancamentoAnterior.quantidadeDeParcelas = lancamento.quantidadeDeParcelas;
-    lancamentoAnterior.dataDePagamento = lancamento.dataDePagamento;
-  } else if (lancamento.ehCredito || lancamento.compraNoDebito ? dataDentroDoMes(lancamento.dataDaCompra) : dataDentroDoMes(lancamento.dataDePagamento)) {
-    const lancamentoTratado = {
-      id: lancamento.id,
-      descricao: lancamento.descricao,
-      idSubgrupo: lancamento.idSubgrupo,
-      subgrupo: lancamento.subgrupo,
-      valor: lancamento.ehCredito ? lancamento.valor : -lancamento.valor,
-      dataDaCompra: new Date(lancamento.dataDaCompra),
-      dataDePagamento: lancamento.ehCredito || lancamento.compraNoDebito ? new Date(lancamento.dataDaCompra) : new Date(lancamento.dataDePagamento),
-      quantidadeDeParcelas: lancamento.quantidadeDeParcelas,
-    }
-    lancamentos.push(lancamentoTratado);
+    formData.append("id", lancamento.id);
   }
-  ordenaListaLancamento(lancamentos);
-  return calculaSaldo(lancamentos);
+  formData.append("compraNoDebito", lancamento.compraNoDebito);
+  formData.append("dataDaCompra", new Date(lancamento.dataDaCompra).toISOString().split('T')[0]);
+  if (lancamento.dataDePagamento) {
+    formData.append("dataDePagamento", new Date(lancamento.dataDePagamento).toISOString().split('T')[0]);
+  }
+  formData.append("descricao", lancamento.descricao);
+  formData.append("ehCredito", lancamento.ehCredito);
+  if (lancamento.quantidadeDeParcelas) {
+    formData.append("quantidadeDeParcelas", lancamento.quantidadeDeParcelas);
+  }
+  formData.append("subGrupoId", lancamento.subGrupoId);
+  formData.append("valor", Math.abs(lancamento.valor));
+  if (lancamento.id) {
+    return client.put(`/${lancamento.id}/alterar`, formData)
+      .then(response => adicionaUmLancamentoNaLista(response.data, lancamentosList));
+  } else if (lancamento.ehCredito || lancamento.compraNoDebito ? dataDentroDoMes(lancamento.dataDaCompra) : dataDentroDoMes(lancamento.dataDePagamento)) {
+    return client.post('', formData)
+      .then(response => adicionaUmLancamentoNaLista(response.data, lancamentosList));
+  }
+  console.log("Você não pode adicionar um pagamento fora do mês.");
+  throw new Error("Não pode adicionar um lançamento fora do mês.");
+}
+
+const adicionaUmLancamentoNaLista = (lancamento, lancamentosList) => {
+  const lancamentos = lancamentosList.filter(lance => lance.id !== lancamento.id);
+  lancamentos.push(preencheUmLancamentoSemSaldo(lancamento));
+  return preencheLancamentos(lancamentos);
 }
 
 function calculaSaldo(lancamentos) {
@@ -88,14 +98,14 @@ function calculaSaldo(lancamentos) {
   });
 }
 
-export const atualizaTabelaComExclusao = ({ lancamento }) => {
-  let continuam = Lancamentos().filter(lance => lance.id !== lancamento.id);
-
-  return calculaSaldo(continuam);
+const removeLancamentoDaLista = (lancamento, lancamentosList) => {
+  const lancamentos = lancamentosList.filter(lance => lance.id !== lancamento.id);
+  return calculaSaldo(lancamentos);
 }
 
-export const incluiLancamentoNaBase = (lancamento) => {
-  Lancamentos().push(lancamento);
+export const atualizaTabelaComExclusao = (lancamento, lancamentosList) => {
+  return client.delete(`/${lancamento.id}/excluir`)
+    .then(response => removeLancamentoDaLista(response.data, lancamentosList));
 }
 
 export const getHistoricoPorGrupo = () => {

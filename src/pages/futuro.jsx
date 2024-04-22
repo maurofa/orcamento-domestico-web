@@ -297,7 +297,7 @@ const Futuro = () => {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
         <Grid direction="column" justifyContent="center" alignItems="stretch" spacing={2} >
-          <Paper justifyContent="center" alignItems="center">
+          <Paper direction="row" justifyContent="center" alignItems="center">
             <img src={require("../assets/alvo.jpeg")} alt="Flexas no alvo" />
           </Paper>
           <Grid spacing={2} direction="column" justifyContent="center" alignItems="stretch">
