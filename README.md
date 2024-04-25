@@ -10,7 +10,7 @@ Apresenta 3 telas principais:
 - **HISTÓRICO** - apresenta 10 maiores gastos, a distribuição dos gastos por tipo e evolução dos gastos no tempo
 - **FUTURO** - apresenta os objetivos
 
-## Como executar o front
+## Como executar o front em modo de desenvolvimento
 
 Será necessário ter o NodeJs com npm instalado.
 
@@ -29,3 +29,22 @@ npm start
 ```
 
 Abra o [http://localhost:3000](http://localhost:3000) no navegador.
+
+## Como executar através do Docker
+
+Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execução em sua máquina.
+
+Navegue até o diretório que contém o Dockerfile no terminal e seus arquivos de aplicação e
+Execute **como administrador** o seguinte comando para construir a imagem Docker:
+
+```shell
+$ docker build -t orcamento-domestico-web .
+```
+
+Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
+
+```shell
+$ docker run -dp 8080:80 orcamento-domestico-web
+```
+
+Uma vez executando, para acessar o front-end, basta abrir o [http://localhost:8080/#/](http://localhost:8080/#/) no navegador.
