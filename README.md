@@ -1,14 +1,18 @@
-# Orçamento Doméstico em React
+# Orçamento Doméstico Web
 
-Este é um Produto Mínimo Viável (MVP) utilizado como critério de pontuação para a disciplina Frontend Avançado do curso de Desenvolvimento Full Stack da PUC-RJ.
+Este é um **Produto Mínimo Viável (MVP)** utilizado como critério de pontuação para a disciplina **Desenvolvimento Back-end Avançado do curso de Desenvolvimento Full Stack da PUC-RJ**.
 
-Trata-se de um front-end de um orçamento doméstico usando React.
+Trata-se de um front-end de um orçamento doméstico usando Reactjs.
 
 Apresenta 3 telas principais:
 
 - **ATUAL** - home page apresenta gastos do mês atual
-- **HISTÓRICO** - apresenta 10 maiores gastos, a distribuição dos gastos por tipo e evolução dos gastos no tempo
+- **HISTÓRICO** - apresenta a distribuição dos gastos
 - **FUTURO** - apresenta os objetivos
+
+[![Orçamento Doméstico](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVEJcbiAgc3ViZ3JhcGggRnJvbnRlbmRcbiAgICBXRUIoT3LDp2FtZW50byBEb23DqXN0aWNvIFdlYilcbiAgZW5kXG4gIHN1YmdyYXBoIEJhY2tlbmRcbiAgICBBUEkoT3LDp2FtZW50byBEb23DqXN0aWNvIC0gQVBJKVxuICAgIEdhdGV3YXkoRnJhc2VzIC0gQVBJKVxuICAgIEJEKEJhbmNvIGRlIERhZG9zIGVtIFNRTGl0ZSlcbiAgZW5kXG4gIHN1YmdyYXBoIEFQSXMgRXh0ZXJuYXNcbiAgICBHSihHZWVrLUpva2VzKSAgXG4gICAgUlVGKFJhbmRvbSBVc2VsZXNzIEZhY3RzKVxuICBlbmRcbiAgXG4gIFdFQi0tPkFQSVxuICBXRUItLT5HYXRld2F5XG4gIEdhdGV3YXktLS0tPkdKXG4gIEdhdGV3YXktLS0tPlJVRlxuICBBUEktLT5CRCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://workflow.jace.pro/#/edit/eyJjb2RlIjoiZ3JhcGggVEJcbiAgc3ViZ3JhcGggRnJvbnRlbmRcbiAgICBXRUIoT3LDp2FtZW50byBEb23DqXN0aWNvIFdlYilcbiAgZW5kXG4gIHN1YmdyYXBoIEJhY2tlbmRcbiAgICBBUEkoT3LDp2FtZW50byBEb23DqXN0aWNvIC0gQVBJKVxuICAgIEdhdGV3YXkoRnJhc2VzIC0gQVBJKVxuICAgIEJEKEJhbmNvIGRlIERhZG9zIGVtIFNRTGl0ZSlcbiAgZW5kXG4gIHN1YmdyYXBoIEFQSXMgRXh0ZXJuYXNcbiAgICBHSihHZWVrLUpva2VzKSAgXG4gICAgUlVGKFJhbmRvbSBVc2VsZXNzIEZhY3RzKVxuICBlbmRcbiAgXG4gIFdFQi0tPkFQSVxuICBXRUItLT5HYXRld2F5XG4gIEdhdGV3YXktLS0tPkdKXG4gIEdhdGV3YXktLS0tPlJVRlxuICBBUEktLT5CRCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
+
+O Frontend se preocupa com a visualização dos dados. A lógica do negócio fica no projeto **Orçamento Doméstico - API**.
 
 ## Como executar o front em modo de desenvolvimento
 
