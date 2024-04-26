@@ -12,6 +12,7 @@ import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React from "react";
+import Frases from '../components/card-frase';
 import PopupCadastro from "../components/popup-cadastro";
 import PopupConfirmacao from '../components/popup-confirmacao';
 import Objetivos, { adicionaObjetivoNaBase, alteraObjetivoNaBase, concluiObjetivoNaBase } from "../services/objetivos.service";
@@ -320,6 +321,7 @@ const Futuro = () => {
             <Button variant="contained" onClick={(event) => alocaReservas(event)} >Aloca Reservas</Button>
             <Button variant="contained" onClick={(event) => fazRetirada(event)} >Faz Retirada</Button>
           </Stack>
+          <Frases></Frases>
         </Grid>
         <PopupCadastro
           open={openCadastroObjetivo}

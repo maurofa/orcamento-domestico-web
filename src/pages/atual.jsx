@@ -1,7 +1,7 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Card, CardContent, CssBaseline, Typography } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
@@ -26,9 +26,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import * as React from 'react';
+import Frases from '../components/card-frase';
 import PopupCadastro from '../components/popup-cadastro';
 import PopupConfirmacao from '../components/popup-confirmacao';
-import getFrase from '../services/frases.service';
 import getGrupos from '../services/grupo.service';
 import getLancamentos, { atualizaTabelaComExclusao, atualizaTabelaComLancamento } from '../services/lancamentos.service';
 
@@ -51,12 +51,10 @@ const Atual = () => {
   const [titulo, setTitulo] = React.useState("");
   const [rows, setRows] = React.useState([]);
   const [grupos, setGrupos] = React.useState([]);
-  const [frase, setFrase] = React.useState("Temos que aproveitar nossa vida pois tudo é passageiro, até nós mesmos.")
 
   React.useEffect(() => {
     getLancamentos().then(lancamentos => setRows(lancamentos));
     getGrupos().then(grupos => setGrupos(grupos));
-    getFrase().then(frase => setFrase(frase));
   }, []);
 
   const cadastraLancamento = (event) => {
@@ -243,15 +241,7 @@ const Atual = () => {
       <div>Lançamento '{lancamento.descricao}' no valor de '{lancamento.valor}'.</div>
     );
   }
-  const card = (
-    <React.Fragment>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {frase}
-        </Typography>
-      </CardContent>
-    </React.Fragment>
-  );
+
 
   return (
     <>
@@ -297,9 +287,7 @@ const Atual = () => {
             </IconButton>
           </Tooltip>
         </Stack>
-        <Box sx={{minWidth: 600}} direction="column" justifyContent="center" >
-          <Card variant='outlined'>{card}</Card>
-        </Box>
+        <Frases></Frases>
       </Grid>
       <PopupCadastro
         open={openCadastro}
