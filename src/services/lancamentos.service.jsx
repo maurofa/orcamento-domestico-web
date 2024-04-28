@@ -60,7 +60,9 @@ export const atualizaTabelaComLancamento = (lancamento, lancamentosList) => {
   if (lancamento.id) {
     formData.append("id", lancamento.id);
   }
-  formData.append("compraNoDebito", lancamento.compraNoDebito);
+  if (lancamento.compraNoDebito) {
+    formData.append("compraNoDebito", lancamento.compraNoDebito);
+  }
   formData.append("dataDaCompra", new Date(lancamento.dataDaCompra).toISOString().split('T')[0]);
   if (lancamento.dataDePagamento) {
     formData.append("dataDePagamento", new Date(lancamento.dataDePagamento).toISOString().split('T')[0]);

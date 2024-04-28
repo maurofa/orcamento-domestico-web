@@ -7,7 +7,13 @@ const Frases = () => {
 
   const [frase, setFrase] = React.useState("Temos que aproveitar nossa vida pois tudo é passageiro, até nós mesmos.");
 
-  React.useEffect(() => getFrase().then(frase => setFrase(frase)), []);
+  React.useEffect(() => {
+    async function fetchData() {
+      const frase = await getFrase();
+      setFrase(frase);
+    }
+    fetchData();
+  }, []);
 
   const card = (
     <React.Fragment>

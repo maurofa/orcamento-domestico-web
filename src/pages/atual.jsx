@@ -53,8 +53,13 @@ const Atual = () => {
   const [grupos, setGrupos] = React.useState([]);
 
   React.useEffect(() => {
-    getLancamentos().then(lancamentos => setRows(lancamentos));
-    getGrupos().then(grupos => setGrupos(grupos));
+    async function fetchData() {
+      const lancamentos = await getLancamentos();
+      setRows(lancamentos);
+      const grupos = await getGrupos();
+      setGrupos(grupos)
+    }
+    fetchData();
   }, []);
 
   const cadastraLancamento = (event) => {
@@ -111,6 +116,7 @@ const Atual = () => {
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
         <Grid
+          container
           direction="column"
           component="form"
           noValidate
@@ -206,7 +212,7 @@ const Atual = () => {
             </FormControl>
             <FormControl xl='4'>
               <TextField
-                disabled={lancamento.compraNoDebito}
+                disabled={lancamento.compraNoDebito || lancamento.ehCredito}
                 placeholder="Quantidade de Parcelas"
                 name="quantidadeDeParcelas"
                 label="Quantidade de Parcelas"
@@ -222,7 +228,7 @@ const Atual = () => {
             <FormControl xl='5'>
               <DemoItem label="Data do primeiro pagamento">
                 <DatePicker
-                  disabled={lancamento.compraNoDebito}
+                  disabled={lancamento.compraNoDebito || lancamento.ehCredito}
                   format='DD/MM/YYYY'
                   onChange={(newValue) => setLancamento({ ...lancamento, dataDePagamento: newValue })}
                   defaultValue={dayjs(lancamento.dataDePagamento)}
